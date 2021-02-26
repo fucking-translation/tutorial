@@ -35,30 +35,46 @@ print dupa
 
 ## 使用Antlr4进行词法分析与语法解析
 
-我本来是想从头开始实现一个词法分析器的，但是这似乎看起来是个非常具有重复性的工作。在浏览网页一段时间后我发现了一个很棒的工具交“Antlr”。你只需用描述你的语言规则的类似组织结构的文件来“喂”它，它就会为你提供一种遍历抽象语法树（也叫解析树）的方式。让我们来为Enkel语言创建一个非常简单的规则
+我本来是想从头开始实现一个词法分析器的，但是这似乎看起来是个非常具有重复性的工作。在浏览网页一段时间后我发现了一个很棒的工具叫“Antlr”。你只需使用描述你的语言规则的文件来“喂”它，它就会为你提供一种遍历抽象语法树（也叫解析树）的方式。让我们从为Enkel语言创建一个非常简单的规则开始吧。
 
 ```anltr
-//header
+// 文件：Enkel.g4
 grammar Enkel;
 
-//parser rules
-compilationUnit : ( variable | print )* EOF; //root rule - globally code consist only of variables and prints (see definition below)
-variable : VARIABLE ID EQUALS value; //requires VAR token followed by ID token followed by EQUALS TOKEN ...
-print : PRINT ID ; //print statement must consist of 'print' keyword and ID
+compilationUnit : ( variable | print )* EOF;
+variable : VARIABLE ID EQUALS value;
+print : PRINT ID ;
 value : NUMBER
-      | STRING ; //must be NUMBER or STRING value (defined below)
+      | STRING ;
 
-//lexer rules (tokens)
-VARIABLE : 'var' ; //VARIABLE TOKEN must match exactly 'var'
+VARIABLE : 'var' ;
 PRINT : 'print' ;
-EQUALS : '=' ; //must be '='
-NUMBER : [0-9]+ ; //must consist only of digits
-STRING : '"'.*'"' ; //must be anything in qutoes
-ID : [a-zA-Z0-9]+ ; //must be any alphanumeric value
-WS: [ \t\n\r]+ -> skip ; //special TOKEN for skipping whitespaces
+EQUALS : '=' ;
+NUMBER : [0-9]+ ;
+STRING : '"'.*'"' ;
+ID : [a-zA-Z0-9]+ ;
+WS: [ \t\n\r]+ -> skip ;
 ```
 
-对于使用者来说最重要的是EnkelBaseListener。当算法遍历树的时候它提供了很棒的回调 - 我们不需要为词法分析器和解析器的类而烦恼 - Antlr这个库帮我们将它们分开了。
+上述代码大多数是自解释的，但是有几点值得注意：
+
+- EOF - 文件结束标志
+- 规则内容之间使用空格隔开，并以分号`;`结束
+
+一旦规则定义好了之后你就可以执行`antlr`工具来生成Java类。
+
+```antlr
+antlr Enkel.g4
+```
+
+这个工具生成了四个类：
+
+- `EnkelLexer` - 包含标记（`token`）的信息
+- `EnkelParser` - 包含解析器（`parser`），标记（`token`）的信息以及为每个解析规则生成的内部类
+- `EnkelListener` - 当解析树访问节点时提供回调
+- `EnkelBaseListener` - `EnkelListener`的空实现
+
+对于库的使用者来说最重要的是EnkelBaseListener。当算法遍历树的时候它提供了很棒的回调 - 我们不需要为词法分析器和解析器的类而烦恼 - Antlr这个库帮我们将它们分开了。
 
 在执行`javac *.java`命令编译所有的java类之后，是时候测试这些规则了。Antlr库中有一个非常有用的工具，就是为了这个目的而编写的。它就是`org.antlr.v4.gui.TestRig`：
 
