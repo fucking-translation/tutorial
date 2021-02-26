@@ -503,4 +503,4 @@ $java first
 
 <div align="left"><a href="./01-最简短的理论.md">上一节</a></div>
 
-<div align="left"><a href="./02-Hello Enkel.md">下一节</a></div>
+<div align="left"><a href="./03-设计Enkel语言的特性.md">下一节</a></div>
