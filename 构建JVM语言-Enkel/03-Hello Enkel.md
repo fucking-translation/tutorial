@@ -80,7 +80,7 @@ ctrl+D //文件结束
 
 ## 遍历解析树
 
-Antlr提供了一种通过实现`EnkelListener`的子类来遍历（访问）解析树元素的方式：
+Antlr提供了一种通过实现`EnkelListener`的子类来遍历（访问）解析树节点的方式：
 
 ```java
 // EnkelTreeWalkListener.java
