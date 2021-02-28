@@ -32,4 +32,4 @@
 
 <div align="left"><a href="./02-Hello Enkel.md">上一节</a></div>
 
-<div align="left"><a href="./03-设计Enkel语言的特性.md">下一节</a></div>
+<div align="left"><a href="./04-添加类的作用域.md">下一节</a></div>
