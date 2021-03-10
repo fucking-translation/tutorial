@@ -239,4 +239,4 @@ kuba@kuba-laptop:~/repos/Enkel-JVM-language$ java Loops
 
 <div align="left"><a href="./11-函数参数命名.md">上一节</a></div>
 
-<div align="left"><a href="./12-for循环.md">下一节</a></div>
+<div align="left"><a href="./13-处理其他原子类型.md">下一节</a></div>
