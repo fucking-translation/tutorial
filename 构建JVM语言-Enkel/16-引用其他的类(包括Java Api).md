@@ -123,4 +123,4 @@ cos to upper case = COS
 
 <div align="left"><a href="./15-埋葬静态属性.md">上一节</a></div>
 
-<div align="left"><a href="./16-引用其他的类(包括Java Api).md">下一节</a></div> 
+<div align="left"><a href="./17-字段.md">下一节</a></div>
