@@ -1,7 +1,3 @@
-# tutorial
-tutorial translation
-
-
 # 推荐阅读
 
 ## rust
