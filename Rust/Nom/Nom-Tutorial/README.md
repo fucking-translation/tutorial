@@ -165,11 +165,11 @@ println!("{:?}", hello_parser("goodbye hello again"));
 
 ## <a name="chap5"></a> 奠定基础
 
-This section deals with setting up the non-nom (isn't that fun to read out load?) parts of the program.  If you are already quite familiar with rust and just want to read about nom then [skip to the next section](#chap6).
+本节处理设置程序的 non-nom (读出负载难道很无趣吗？)部分。如果你对 Rust 已经十分熟悉并且只是希望阅读关于 nom 部分的内容，你可以直接跳到[下一节](#chap6)。
 
-### Encapsulation
+### 封装
 
-It is simple, and tempting, to write your whole program in one file.  However, it is good practice to split your program into a library (or crate) and binary to make the underlying logic easy to reuse.  We'll take the high road in this tutorial and create an empty file called `lib.rs` in the same directory as `main.rs`.  Cargo automatically knows to build `lib.rs` into a library/crate with the name "nom-example" we specified in `Cargo.toml` using the line `name = "nom-example"`.  Then let's make a new `main.rs` that uses our `nom-example` crate instead of using nom directly.
+将你的整个程序写在一个文件中很简单，也很迷人。然而，更好的做法是将你的程序分为类库和二进制文件，让基础逻辑更易于重用。在本教程中，我们将使用一种更得体(take the high road)的方式，在`main.rs`的同级目录下创建一个名为`lib.rs`的空文件。Cargo自动知道将`lib.rs`构建到我们在`Cargo.toml`中使用`name="nom-example"`行指定名称“nom-example”的库/crate中。然后让一个新的`main.rs`使用我们的`nom-example`库而不是直接使用 nom。
 
 ```rust.rs
 extern crate nom_example;
@@ -177,11 +177,12 @@ extern crate nom_example;
 fn main() {
 }
 ```
-Note that when the name of a crate contains hyphens we replace them with underscores in the Rust code.
 
-### Error Handling
+请注意：当 crate 的名字包含中划线时，我们在 Rust 代码中将其转化为下划线。
 
-Unfortunately, many Rust tutorials handle potential errors by having you write `could_fail.unwrap()` or `could_fail.expect("Oh no!")`.  These statements cause your code to panic whenever an error occurs.  That's all well and good in a simple didactic example, but you should avoid writing production code that panics.  Instead we will introduce the syntax `could_fail?` known as the question mark `?` operator.  This requires a bit of plumbing.
+### 错误处理
+
+很遗憾，很多 Rust 教程通过书写`could_fail.unwrap()`或`could_fail.expect("Oh no!")`来处理潜在的错误。当这些语句发生错误时，会让你的代码发生 panic。在一个简单的示例中，这一切都运行的很好，但是你应该避免书写会引起 panic 的生产代码。因此我们引入被称为`?`运算符的`could_fail?`语法。这需要一些管道。
 
 ```rust
 // lib.rs
@@ -207,15 +208,15 @@ fn main() -> std::result::Result<(), BoxError> {
 ```
 
 
-Our `main()` function now returns a `Result` in which the error type is something called `BoxError` that we defined in `lib.rs`.  At the end of `main()` we return `Ok(())` with an empty tuple to signify successful completion of the program.  When we write `main()` or any other function in this way it allows us to write `could_fail?` which behaves similarly to `could_fail.unwrap()` except that it returns an error up the call stack instead of panicking.  Refer to the [Rust Book section on error handling](https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html) if you are not familiar with this syntax.
+我们的`main()`函数现在返回一个`Result`，其中的错误类型是我们在`lib.rs`中定义的`BoxError`。在`main()`函数的结尾，我们返回带有空元组的`Ok(())`，以表示程序已经正常完成。当我们以这种方式编写`main()`函数或其他函数时，它允许我们编写`could_fail?`，其行为与`could_fail.unwrap()`类似，不同之处在于它在堆栈中返回一个错误而不是 panic。如果你对这个语法不是很熟悉，请参阅[rust程序设计](https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html)。
 
-What exactly is this mysterious `BoxError`?  It's something called a [trait object](https://doc.rust-lang.org/reference/types/trait-object.html) which, in this case, allows you to pass any error implementing the standard [`Error`](https://doc.rust-lang.org/std/error/trait.Error.html) trait up the call stack.  Note the inclusion of [`Send`](https://doc.rust-lang.org/std/marker/trait.Send.html) and [`Sync`](https://doc.rust-lang.org/std/marker/trait.Sync.html) to require that errors be thread-safe; although the usefulness of this may not be apparent now, it becomes very important whenever you interface with concurrent code or libraries.  Refer to [my error tutorial](https://benkay86.github.io/rust-error-tutorial.html) to learn more about this design pattern.
+这个神秘的`BoxError`到底是什么？它就是所谓的 [trait 对象](https://doc.rust-lang.org/reference/types/trait-object.html)，在这里，允许你将所有实现了标准[`Error`](https://doc.rust-lang.org/std/error/trait.Error.html)特征的错误传递给调用栈。注意到包含了 [`Send`](https://doc.rust-lang.org/std/marker/trait.Send.html) 和 [`Sync`](https://doc.rust-lang.org/std/marker/trait.Sync.html) 来保证错误是线程安全的；尽管它们的用处现在还不明显，但是当你与并发的代码或类库进行交互时，它就变得非常重要。请参阅 [rust-error-tutorial](https://benkay86.github.io/rust-error-tutorial.html) 来学习它的设计模式。
 
-> Note: In previous versions of this tutorial I demonstrated how to write a custom error type for encapsulating nom errors.  [Since 5.1.1 nom errors implement `Error`](https://github.com/Geal/nom/pull/1043) and thus work out-of-the-box with the Rust's question mark `?` operator.  Writing custom error types is no longer needed.  Hooray!
+> 注意：在本教程之前的版本中，我演示了如何编写用于封装 nom 错误的自定义错误类型。[自从 nom 5.1.1 的错误实现了`Error`](https://github.com/Geal/nom/pull/1043)，因此可以与 Rust 中的`?`一起使用。太棒了！
 
-### Storing the Mount Information
+### 存储 Mount 信息
 
-When we parse a line in `/proc/mounts` we are going to want to parse it _into_ something.  Let's add a simple struct to `lib.rs` for storing the information about a mount.  Note that we could use a [HashSet](https://doc.rust-lang.org/std/collections/struct.HashSet.html) for the mount options but will instead use a vector for simplicity.
+当我们解析`/proc/mounts`中的一行时，我们需要将它解析成某一个结构。让我们在`lib.rs`中添加一个简单的结构体，以存储 mount 的信息。请注意：我们可以使用一个 [HashSet](https://doc.rust-lang.org/std/collections/struct.HashSet.html) 存储 mount 的选项，但是为了简单起见，我们使用向量。
 
 ```rust
 #[derive(Clone, Default, Debug)]
@@ -227,14 +228,15 @@ pub struct Mount {
 }
 ```
 
-## <a name="chap6"></a>It's Not Whitespace
+## <a name="chap6"></a>它不是空格
 
-Building a parser with nom is a lot like building with legos.  You start with building the smallest piece and then gradually combine pieces together until you get a cool looking castle or spaceship.  You'll recall that each line in `/proc/mounts` is whitespace-delimited:
+使用 nom 构建解析器非常类似于使用乐高建造一样。你从建造最小的零件开始，然后逐步将零件组合在一起，直到获得看起来很酷的城堡或太空飞船。你会回想起`/proc/mounts`中的每一行都是用空格分隔的：
 
 ```console
 sysfs /sys sysfs rw,seclabel,nosuid,nodev,noexec,relatime 0 0
 ```
-That means that each item within the line is simply a sequence of characters/bytes that is _not_ whitespace.  We'll start by making a nom parser that recognizes any sequence of one or more bytes that is not whitespace.
+
+这意味着该行中的每一项都是一个字符或字节序列，而不是空格。我们将从构建一个 nom 解析器开始，该解析器可以识别一个或多个非空格的字节序列。
 
 ```rust
 pub(self) mod parsers {
@@ -257,6 +259,7 @@ pub(self) mod parsers {
 	}
 }
 ```
+
 The core of this parser is `nom::bytes::complete::is_not(" \t")` which is a nom parser that recognizes one or more bytes that is not a space or tab -- i.e. is not whitespace, exactly what we want!  If the syntax for creating a custom parser (here named `not_whitespace`) doesn't look familiar to you then go back to the [Hello Parser](#chap3) example.
 
 ### Organization
