@@ -23,7 +23,7 @@ Nom 的官方文档包含一些简单的示例(如：如何解析十六进制RGB
 
 ## <a name="chap1"></a>The Exercise
 
-If you use Linux then you are likely familiar with the `mount` command.  If you run `mount` without any arguments it will print a list of mounted filesystems to the terminal.
+如果你使用的是 Linux 系统，你可能对`mount`命令很熟悉了。如果你运行`mount`却不带任何参数，它将会在终端上打印出已挂载文件系统的清单。
 
 ```console
 $ mount
@@ -31,22 +31,24 @@ sysfs on /sys type sysfs (rw,seclabel,nosuid,nodev,noexec,relatime)
 proc on /proc type proc (rw,nosuid,nodev,noexec,relatime)
 ...output trimmed for length...
 ```
-Replicating the entire function of the `mount` command in Rust is beyond the scope of this tutorial, but we can replicate the above output with the help of nom.  The Linux kernel stores information about all the currently mounted filesystems in `/proc/mounts`.
+
+使用 Rust 实现`mount`命令的全部功能超出了本教程的范围，但是我们可以借助 Nom 实现上面的输出内容。Linux 内核在`proc/mounts`中存储了当前所有关于已挂载文件系统的信息。
 
 ```console
 $ cat /proc/mounts
 sysfs /sys sysfs rw,seclabel,nosuid,nodev,noexec,relatime 0 0
 proc /proc proc rw,nosuid,nodev,noexec,relatime 0 0
 ```
-Each mount is described on a separate line.  Within each line, the properties of the mount are space delimited.
 
-1. Device (e.g. sysfs, /dev/sda1)
-2. Mount point (e.g. /sys, /mnt/disk)
-3. Filesystem type (e.g. sysfs, ext4)
-4. Mount options, a comma-delimited string of options (e.g. rw, ro)
-5. Each line ends in `0 0` to mimic the format of `/etc/fstab`.  This 5th column `0 0` is just decoration -- it is the same for every line and therefore does not contain any useful information.
+每个 mount 都在单独的一行中描述。在每一行中，mount 的属性使用空格分开。
 
-__In this tutorial__ we will write a program to parse each line of `/proc/mounts` into a Rust struct and print them back out to the console just like the command `mount`.
+1. 设备 (如：sysfs, /dev/sda1)
+2. 挂载点 (如：/sys, /mnt/disk)
+3. 文件系统类型 (如：sysfs, ext4)
+4. 挂载选项，一个用逗号分隔的字符串 (如：rw, ro)
+5. 每一行以`0 0`结尾，以模仿(mimic)`/etc/fstab`的格式。第五列的`0 0`只是一个装饰 -- 每行都相同，因此不包含有用的信息。
+
+__在本教程中__，我们会写一个程序将`/proc/mounts`的每一行解析成 Rust 的结构体并将它们打印在控制台上，就像`mount`命令一样。
 
 
 ## <a name="chap2"></a>Getting Started
