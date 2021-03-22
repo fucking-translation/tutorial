@@ -9,5 +9,6 @@
 # 推荐阅读
 
 ### Rust
-- [rust程序设计语言](https://github.com/KaiserY/trpl-zh-cn)
-- [Brainfuck JIT 虚拟机教程](https://nugine.github.io/bfjit/introduction.html)
+- [rust程序设计语言](https://github.com/KaiserY/trpl-zh-cn) 
+- [rust死灵书](https://learnku.com/docs/nomicon/2018)  
+- [Brainfuck JIT 虚拟机教程](https://nugine.github.io/bfjit/introduction.html) 
