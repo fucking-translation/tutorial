@@ -1,27 +1,27 @@
-# Nom5教程
+# nom5 教程
 
 [原文](https://github.com/benkay86/nom-tutorial)
 
-[Nom](https://github.com/Geal/nom)是一个用 Rust 编写的解析器组合器库。它可以处理二进制和文本文件。在需要使用正则表达式，Flex或Bison的地方可以考虑使用它。Nom具有 Rust 的强类型和内存安全的优势，它通常比其他可替代的工具性能更好。学习 Nom 是 Rust 工具箱中的一项有价值的补充。
+[nom](https://github.com/Geal/nom)是一个用 Rust 编写的解析器组合器库。它可以处理二进制和文本文件。在需要使用正则表达式，Flex或Bison的地方可以考虑使用它。nom具有 Rust 的强类型和内存安全的优势，它通常比其他可替代的工具性能更好。学习 nom 是 Rust 工具箱中的一项有价值的补充。
 
 ## 基本原理
 
-Nom 的官方文档包含一些简单的示例(如：如何解析十六进制RGB颜色代码)以及非常复杂的示例(如：如何解析json)。当我第一次学习 Nom 时，我在简单示例和复杂示例之间发现了陡峭的学习曲线。此外，Nom 的早期版本和大多数现有文档都使用宏。从 Nom 5.0 开始，不赞成使用宏，而推荐使用函数。本教程旨在通过解析`/proc/mounts`的内容来填补简单解析器和复杂解析器之间的空白，并演示使用函数替代宏的方法。
+nom 的官方文档包含一些简单的示例(如：如何解析十六进制RGB颜色代码)以及非常复杂的示例(如：如何解析json)。当我第一次学习 nom 时，我在简单示例和复杂示例之间发现了陡峭的学习曲线。此外，nom 的早期版本和大多数现有文档都使用宏。从 nom 5.0 开始，不赞成使用宏，而推荐使用函数。本教程旨在通过解析`/proc/mounts`的内容来填补简单解析器和复杂解析器之间的空白，并演示使用函数替代宏的方法。
 
 ## Table of Contents
 
-1. [The Exercise](#chap1)
-2. [Getting Started](#chap2)
-3. [Hello Parser](#chap3)
-4. [Reading the Nom Documentation](#chap4)
-5. [Laying the Groundwork](#chap5)
-6. [It's Not Whitespace](#chap6)
-7. [The Great Escape](#chap7)
-8. [Mount Options](#chap8)
-9. [Putting it All Together](#chap9)
-10. [Iterators are the Finishing Touch](#chap10)
+1. [mount 命令回顾](#chap1)
+2. [环境搭建](#chap2)
+3. [你好，解析器](#chap3)
+4. [阅读 nom 文档](#chap4)
+5. [奠定基础](#chap5)
+6. [它不是空格](#chap6)
+7. [最棒的转义](#chap7)
+8. [Mount 选项](#chap8)
+9. [整合全部内容](#chap9)
+10. [迭代器是点睛之笔](#chap10)
 
-## <a name="chap1"></a>The Exercise
+## <a name="chap1"></a> mount 命令回顾
 
 如果你使用的是 Linux 系统，你可能对`mount`命令很熟悉了。如果你运行`mount`却不带任何参数，它将会在终端上打印出已挂载文件系统的清单。
 
@@ -32,7 +32,7 @@ proc on /proc type proc (rw,nosuid,nodev,noexec,relatime)
 ...output trimmed for length...
 ```
 
-使用 Rust 实现`mount`命令的全部功能超出了本教程的范围，但是我们可以借助 Nom 实现上面的输出内容。Linux 内核在`proc/mounts`中存储了当前所有关于已挂载文件系统的信息。
+使用 Rust 实现`mount`命令的全部功能超出了本教程的范围，但是我们可以借助 nom 实现上面的输出内容。Linux 内核在`proc/mounts`中存储了当前所有关于已挂载文件系统的信息。
 
 ```console
 $ cat /proc/mounts
@@ -51,9 +51,9 @@ proc /proc proc rw,nosuid,nodev,noexec,relatime 0 0
 __在本教程中__，我们会写一个程序将`/proc/mounts`的每一行解析成 Rust 的结构体并将它们打印在控制台上，就像`mount`命令一样。
 
 
-## <a name="chap2"></a>Getting Started
+## <a name="chap2"></a> 环境搭建
 
-To learn from the example code you will need to [have Rust installed](https://www.rust-lang.org/learn/get-started), and I will assume you have some basic familiarity with the Rust language.  To download and run the complete tutorial:
+为了学习示例的代码，你需要先[安装 Rust](https://www.rust-lang.org/learn/get-started)，并且我假设你已经有了 Rust 语言的基础。然后下载并运行本教程的完整代码：
 
 ```console
 $ git clone https://github.com/benkay86/nom-tutorial.git
@@ -63,16 +63,17 @@ sysfs on /sys type sysfs (rw,seclabel,nosuid,nodev,noexec,relatime)
 proc on /proc type proc (rw,nosuid,nodev,noexec,relatime)
 ...output trimmed for length...
 ```
-The finished version of the tutorial is a lot to digest at once, so in the sections below we will build up to it step-by-step.  I recommend creating your own cargo project to experiment with `cargo new my-nom-tutorial` and keeping a copy of the completed tutorial as a reference.  To use nom in your own cargo package simply edit `Cargo.toml` to contain:
+
+本教程最终版本的代码需要花费大量时间消化，所以在接下来的章节我们将会一步步的构建。我建议使用`cargo new my-nom-tutorial`来创建自己的 Rust 项目，并保证完整教程的副本作为参考。
 
 ```toml
 [dependencies]
 nom = "5.0"
 ```
 
-## <a name="chap3"></a>Hello Parser
+## <a name="chap3"></a> 你好，解析器
 
-In your new project, edit `main.rs` to contain the following:
+在你的新项目中，根据下面的代码编辑`main.rs`的内容：
 
 ```rust
 extern crate nom;
@@ -87,7 +88,8 @@ fn main() {
 	println!("{:?}", hello_parser("goodbye hello again"));
 }
 ```
-Compile and run the program:
+
+编译并运行该程序：
 
 ```console
 $ cargo run
@@ -95,68 +97,73 @@ Ok(("", "hello"))
 Ok((" world", "hello"))
 Err(Error(("goodbye hello again", Tag)))
 ```
-Let's break this program down line by line.
 
-### Using the Nom Crate
+让我们逐行细分该程序。
+
+### 使用 nom crate
 
 ```rust
 extern crate nom;
 ```
-In the [previous section](#chap2) we added nom as a dependency in `Cargo.toml`.  This additional line in `main.rs` tells your program about the nom crate, enabling you to access it through `nom::`.  You can optionally add lines like `use nom::IResult;` to cut down on typing, but I have deliberately used the verbose notation in this tutorial so that you can clearly see the module hierarchy.
 
-### Creating a Custom Parser
+在[上一节](#chap2)中，我们在`Cargo.toml`添加了 nom 依赖。这一行告诉你的程序关于 nom 库的信息，允许你通过`nom::`来访问这个库。你可以添加诸如`use nom::IResult;`之类的行以减少输入，但是我在本教程中故意使用了冗长的符号，以便你可以清楚的看到模块的层次结构(hierarchy)。
+
+### 创建一个自定义的解析器
 
 ```rust
 fn hello_parser(i: &str) -> nom::IResult<&str, &str> {
 	nom::bytes::complete::tag("hello")(i)
 }
 ```
-This creates a function called `hello_parser` that takes a `&str` (borrowed string slice) as its input and returns a type `nom::IResult<&str, &str>`, which we'll talk more about later.  Within the body of the function we create a nom tag parser.  A tag parser recognizes a literal string, or "tag", of text.  The tag parser `tag("hello")` is a function object that recognizes the text "hello".  We then call the tag parser with the input string as its argument and return the result.  (Remember, in Rust you can omit the `return` keyword from the last line in a function.)
 
-### Invoking the Parser
+上述代码创建了一个名为`hello_parser`的函数，该函数将`&str`(被借用的字符串切片)作为输入，并将`nom::IResult<&str, &str>`作为返回类型，我们将在后面对其进行详细的介绍。在函数体中，我们创建了 nom 的 tag 解析器。tag 解析器可以识别文本字符串或者文本的“标签”。 tag 解析器`tag("hello")`是一个函数对象，可以识别文本中的“hello”。我们接着调用 tag 解析器，将输入的字符串作为它的参数并返回结果(请记住，在 Rust 中，你可以在函数的最后一行省略`return`关键字)。
+
+### 调用解析器
 
 ```rust
 println!("{:?}", hello_parser("hello world"));
 // Ok((" world", "hello"))
 ```
-Now let's go to `main()` and see what the parser does.  Recall that `println!("{:?}", x)` prints out the debugging version of `x`, giving us an easy way to inspect the content of Rust variables.  Here we call `hello_parser()` with several different test strings and print out the returned `nom::IResult<&str, &str>`.  As you can see, it turns out an `IResult` is a Rust `Result`, which can contain an `Ok` or `Err`.  When the parser succeeds it returns a tuple of its generic type parameters, in this case `&str`
-.  The second element of the tuple is the "output" of the parser, which is often the string matched or "consumed by" the parser, "hello".  The first element of the tuple is the remaining input, " world".
+
+现在让我们来到`main`函数并查看解析器都做了什么。回顾(recall)`println!("{:?}", x)`，打印`x`的调试输出，给我们提供了一种简单的方式来查看 Rust 变量的内容。在这里我们使用几种不同的测试字符串来调用`hello_parser()`，并打印返回的`nom::IResult<&str, &str>`结果。若你所示，它表明`IResult`是一种 Rust 的`Result`，可以包含`Ok`或者`Err`。当解析器执行成功时，将返回其通用类型参数的元组，在本例中为`&str`。元组的第二个元素是解析器的“输出”，通常是解析器匹配或消耗的字符串，在本例中是“hello”。元组的第一个参数是剩下的输入部分。在本例中是“ world”(注意：包含前面的一个空格)。
 
 ```rust
 println!("{:?}", hello_parser("hello"));
 // Ok(("", "hello"))
 ```
-In this case the tag consumes the whole input, so the first element of the tuple (the remaining input) is an empty string.
+
+在本例中，tag 消耗来整个输入，因此元组的第一个元素(输入的剩余部分)是一个空字符串。
 
 ```rust
 println!("{:?}", hello_parser("goodbye hello again"));
 // Err(Error(("goodbye hello again", Tag)))
 ```
-Here the tag returns an `Err` because the input string didn't start with "hello."  Note that the parser failed even though the word "hello" appears in the middle of the input -- most nom parsers (including tag) will only match the beginning of the input.  The `Error` object is a `nom::Err::Error((&str, nom::error::ErrorKind))`, which is a tuple of the remaining input (the parser failed, so all of the input remained) and an `ErrorKind` describing which parser failed.  You can read more about [advanced nom error handling on github](https://github.com/Geal/nom/blob/master/doc/error_management.md).
 
-### Summary
+在这里，tag 将会返回一个`Err`，因为输入字符串不是以“hello”开头的。注意到即使单词“hello”出现在输入的中间部分，解析器解析依然失败了 -- 大多数 nom 解析器(包括 tag) 将只会匹配输入的开头。`Error`对象是一个`nom::Err::Error((&str, nom::error::ErrorKind))`，他是剩余的输入(解析失败，所以整个输入会完全保留)以及用来描述解析失败的`ErrorKind`组成的元组。你可以在 Github 中阅读更多关于 [nom 错误处理](https://github.com/Geal/nom/blob/master/doc/error_management.md)的内容。
 
-* Nom parsers typically take an input `&str` and return an `IResult<&str,&str>`.
-* You can compose your own parser by defining a `fn (&str) -> IResult<&str,&str>` that returns the result of some combination of nom parsers.
-* When a parser successfully matches some or all of the input it returns `Ok` with a tuple of the remaining input and the consumed input.
-* When a parser fails to match any input it returns an `Err`.
-* Most nom parsers match only the beginning of the input, even if there is a pattern that could match later in the input.
+### 总结
 
-## <a name="chap4"></a>Reading the Nom Documentation
+* nom解析器通常采用输入`&str`并返回`IResult<&str,&str>`。
+* 你可以通过定义`fn (&str) -> IResult<&str,&str>`来组成自己的解析器并返回 nom 解析器某种组合的结果。
+* 当解析器成功匹配到一些或全部的输入，它将返回`Ok`，其包含剩余的输入以及消耗的输入组成的元组。
+* 当解析器匹配失败将返回一个`Err`。
+* 大多数 nom 解析器只匹配输入的开头，即使有模式可以匹配到之后的输入。
 
-You will need to refer to the [documentation for nom](https://docs.rs/nom) often.  Make sure you are reading the documentation for version 5.0 or later, since a lot has changed since version 4.  Previous versions of nom were very macro centric, so you will find a lot of references to macros like `tag!()`.  Macros have been soft-deprecated in favor of functions.  Most functions have the same name as their macro counterparts but without the exclamation point, i.e. `tag()`.  You can see a [list of all nom's functions here](https://docs.rs/nom/5.0.0/nom/all.html#Functions).
+## <a name="chap4"></a>阅读 nom 文档
 
-You will find that there are `streaming` and `complete` submodules.  In advanced use, nom supports streaming, or buffered, input where the parser might encounter incomplete fragments of input.  In this tutorial we will focus on the `complete` submodule for non-streaming input.
+你可能需要经常参考 nom 的[文档](https://docs.rs/nom)。请确保你阅读的是 5.0 以及之后的版本，因为在 nom 4 版本之后有一个较大的改动。之前版本的 nom 是以宏为中心，因此你可以发现很多对宏的引用，如`tag!()`。nom 中的宏已经被逐渐弃用，以支持函数。大多数函数的名称与宏的名称相同，只是没有感叹号，如：`tag()`。你可以在[这里](https://docs.rs/nom/5.0.0/nom/all.html#Functions)查看 nom 中的所有函数清单。
 
-* `nom::branch` parsers perform logical operations on multiple sub-parsers.  For example, `nom::branch::alt` succeeds if any one of its sub-parsers succeeds.
-* `nom::bytes::complete` parsers operate on sequences of bytes.  Our friend `tag` belongs to this submodule.
-* `nom::character::complete` recognizes characters, for example `nom::character::complete::multispace1` matches 1 or more characters of whitespace.
-* `nom::combinator` allows us to build up combinations of parsers.  For example, `nom::combinator::map` passes the output of one parser into a second parser.
-* `nom::multi` parsers return collections of outputs.  For example, `nom::multi::separated_list` returns a vector of strings separated by a delimiter.
-* `nom::number::complete` parsers match numeric values.
-* `nom::sequence` parsers match finite sequences of input.  For example, `nom::sequence::tuple` takes a tuple of sub-parsers and returns a tuple of their outputs.
+你会发现其中有`streaming`和`complete`子模块。在高级使用中，nom 支持流输入或缓冲输入，这是一种解析器可能会遇到的不完整输入片段。在本教程中，我们将重点关注用于非流输入的`complete`子模块。
 
-## <a name="chap5"></a> Laying the Groundwork
+* `nom::branch`中的解析器可以对于多个子解析器执行逻辑操作。举个例子：如果有任何一个子解析器执行成功，则`nom::branch::alt`执行成功。
+* `nom::bytes::complete`中的解析器可以对字节数组进行操作。我们的朋友`tag`解析器就是属于这个子模块的。
+* `nom::character::complete`中解析器可以识别字符。举个例子：`nom::character::complete::multispace1`匹配1或多个空格。
+* `nom::combinator`中的解析器允许我们构建解析器的组合。举个例子：`nom::combinator::map`将第一个解析器的输出传递给第二个解析器。
+* `nom::multi`中的解析器可以返回输出的集合。举个例子：`nom::multi::separated_list`返回被分隔符分开的字符串向量。
+* `nom::number::complete`中的解析器可以匹配数值。
+* `nom::sequence`中的解析器可以匹配有限的输入序列。举个例子：`nom::sequence::tuple`接受一个子解析器元组并返回它们输出的元组。
+
+## <a name="chap5"></a> 奠定基础
 
 This section deals with setting up the non-nom (isn't that fun to read out load?) parts of the program.  If you are already quite familiar with rust and just want to read about nom then [skip to the next section](#chap6).
 
