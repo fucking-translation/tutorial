@@ -4,7 +4,8 @@
  - [x] [构建JVM语言 - Enkel](./Java/构建JVM语言-Enkel)
 
 ### Rust
- - [ ] [使用LLVM构建Kaleidoscope语言](./Rust/使用LLVM构建Kaleidoscope语言)
+ - [ ] [使用LLVM构建Kaleidoscope语言](./Rust/使用LLVM构建Kaleidoscope语言)  
+ - [x] [nom5 教程](./Rust/Nom/Nom-Tutorial/)
 
 # 推荐阅读
 
