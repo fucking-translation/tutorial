@@ -264,9 +264,9 @@ pub(self) mod parsers {
 
 ### 组织
 
-Although not strictly necessary to make a program work, we try to model good coding practices through encapsulation.  We'll put all our nom parsers inside a submodule named `parsers`.  The submodule is `pub(self)`, which means that other methods in `lib.rs` can use it but it's not exposed outside of our crate.
+尽管并非一定要使程序正常工作，但我们还是尝试通过封装对良好的编码进行建模。我们将在名为`parsers`的子模块下放置我们所有的 nom 解析器。该子模块是`pub(self)`的，意味着在`lib.rs`中的其他函数可以使用它，但是它不会暴露在我们的crate之外。
 
-One of the parsers we write later on will need to use the `Mount` struct we defined in the [previous section](#chap5).  We use `use super::Mount` to make the `Mount` struct defined in the parent, or "super" scope of the `parsers` module visible inside the `parsers` module.
+我们将要编写的解析器之一One of the parsers we write later on will need to use the `Mount` struct we defined in the [previous section](#chap5).  We use `use super::Mount` to make the `Mount` struct defined in the parent, or "super" scope of the `parsers` module visible inside the `parsers` module.
 
 ### Unit Tests
 
