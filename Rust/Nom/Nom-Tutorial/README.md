@@ -2,7 +2,7 @@
 
 [原文](https://github.com/benkay86/nom-tutorial)
 
-[nom](https://github.com/Geal/nom)是一个用 Rust 编写的解析器组合器库。它可以处理二进制和文本文件。在需要使用正则表达式，Flex或Bison的地方可以考虑使用它。nom具有 Rust 的强类型和内存安全的优势，它通常比其他可替代的工具性能更好。学习 nom 是 Rust 工具箱中的一项有价值的补充。
+[nom](https://github.com/Geal/nom)是一个用 Rust 编写的解析器组合器库。它可以处理二进制和文本文件。在需要使用正则表达式，Flex或Bison的地方可以考虑使用它。nom 具有 Rust 的强类型和内存安全的优势，它通常比其他可替代的工具性能更好。学习 nom 是 Rust 工具箱中的一项有价值的补充。
 
 ## 基本原理
 
@@ -17,11 +17,11 @@ nom 的官方文档包含一些简单的示例(如：如何解析十六进制RGB
 5. [奠定基础](#chap5)
 6. [它不是空格](#chap6)
 7. [最棒的转义](#chap7)
-8. [Mount 选项](#chap8)
+8. [挂载选项](#chap8)
 9. [整合全部内容](#chap9)
 10. [迭代器是点睛之笔](#chap10)
 
-## <a name="chap1"></a> mount 命令回顾
+## <a name="chap1"></a> 挂载命令回顾
 
 如果你使用的是 Linux 系统，你可能对`mount`命令很熟悉了。如果你运行`mount`却不带任何参数，它将会在终端上打印出已挂载文件系统的清单。
 
@@ -40,7 +40,7 @@ sysfs /sys sysfs rw,seclabel,nosuid,nodev,noexec,relatime 0 0
 proc /proc proc rw,nosuid,nodev,noexec,relatime 0 0
 ```
 
-每个 mount 都在单独的一行中描述。在每一行中，mount 的属性使用空格分开。
+每个挂载都在单独的一行中描述。在每一行中，挂载的属性使用空格分开。
 
 1. 设备 (如：sysfs, /dev/sda1)
 2. 挂载点 (如：/sys, /mnt/disk)
@@ -216,7 +216,7 @@ fn main() -> std::result::Result<(), BoxError> {
 
 ### 存储 Mount 信息
 
-当我们解析`/proc/mounts`中的一行时，我们需要将它解析成某一个结构。让我们在`lib.rs`中添加一个简单的结构体，以存储 mount 的信息。请注意：我们可以使用一个 [HashSet](https://doc.rust-lang.org/std/collections/struct.HashSet.html) 存储 mount 的选项，但是为了简单起见，我们使用向量。
+当我们解析`/proc/mounts`中的一行时，我们需要将它解析成某一个结构。让我们在`lib.rs`中添加一个简单的结构体，以存储挂载的信息。请注意：我们可以使用一个 [HashSet](https://doc.rust-lang.org/std/collections/struct.HashSet.html) 存储挂载的选项，但是为了简单起见，我们使用向量。
 
 ```rust
 #[derive(Clone, Default, Debug)]
@@ -266,13 +266,13 @@ pub(self) mod parsers {
 
 尽管并非一定要使程序正常工作，但我们还是尝试通过封装对良好的编码进行建模。我们将在名为`parsers`的子模块下放置我们所有的 nom 解析器。该子模块是`pub(self)`的，意味着在`lib.rs`中的其他函数可以使用它，但是它不会暴露在我们的crate之外。
 
-我们将要编写的解析器之一One of the parsers we write later on will need to use the `Mount` struct we defined in the [previous section](#chap5).  We use `use super::Mount` to make the `Mount` struct defined in the parent, or "super" scope of the `parsers` module visible inside the `parsers` module.
+我们稍后编写的解析器之一将要使用我们在[上一节](#chap5)定义的`Mount`结构。我们使用`use super::Mount`来使`Mount`结构定义在父模块中，或使`parsers`模块的“super”作用域在`parsers`模块内可见。
 
-### Unit Tests
+### 单元测试
 
-We also model another good programming practice, unit testing.  Within the `parsers` module we've defined another submodule called `tests` (you could call it anything you want).  The line `#cfg[(test)]` tells Cargo that the `tests` module should only be compiled when running `cargo test`.  The actual test takes place inside the function `fn test_not_whitespace()` (which again can have any name, but let's not get too creative).  The `#[test]` just before the function name tells Cargo to run that function as a unit test when invoked with `cargo test`.
+我们还为另一个良好的编程习惯建模，即单元测试。在`parsers`模块中我们定义另一个被称为`tests`的子模块(你可以对其任意命名)。`#cfg[(test)]`行告诉 Cargo `tests`模块应当仅在运行`cargo test`时进行编译。实际的测试在函数`fn test_not_whitespace()`内部进行(take place)。`#[test]`仅放置在函数名之前，它告诉 Cargo 当调用`cargo test`时，它会运行该函数作为单元测试。
 
-Here panics are OK.  A unit test succeeds if it doesn't panic.  The macro `assert_eq!()` panics if its two arguments aren't equal.  We test out a few assertions in which the `not_whitespace` parser should succeed and make sure that the whitespace and following characters in each input sequence are not consumed.  We also test out one case where the parser should fail.  Even though our program isn't finished yet, you can already compile it and make sure the `not_whitespace` parser works as expected:
+在这里，panic 是被允许的。如果没有 panic 则表示单元测试成功。宏`assert_eq!()`将会发生 panic 如果两个参数不相等。我们测试了一些断言(assertion)，在断言中`not_whitespace`解析器应该执行成功并确保空格和每一个输入序列的后续字符不会被消耗。我们也测试了一种情况使解析器应该解析失败。尽管我们的程序还没有完成，你已经可以编译它并确保`not_whitespace`解析器可以和你预期的一样正常运行。
 
 ```console
 $ cargo test
@@ -292,9 +292,9 @@ running 0 tests
 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
 ```
 
-## <a name="chap7"></a>The Great Escape
+## <a name="chap7"></a>最棒的转义
 
-What happens if we mount a directory with spaces?  If you have root access you can try the following, otherwise take my word for it.
+当我们挂载了一个带有空格的目录会发生什么？如果你具有 root 用户的访问权限，可以尝试以下操作，否则请相信我的话，准没错。
 
 ```console
 $ mkdir "Marry had"
@@ -304,9 +304,10 @@ $ cat /proc/mounts
 /dev/nvme0n1p3 /home/benjamin/Mary\040had btrfs rw,seclabel,noatime,nodiratime,ssd,discard,space_cache,subvolid=258,subvol=/home/benjamin/a\040little\040lamb 0 0
 ...output trimmed for length...
 ```
-As you can see, each space was replaced with `\040`.  This is a feature common to many languages you might have to parse called an escaping.  The character `\` is the escape character and `040` is the escaped sequence.  Sometimes you might actually want a `\` to appear in which case you would escape it as `\\`.
 
-Fortunately, nom already has a built-in parser for dealing with escaped sequences called `nom::bytes::complete::escaped_transform`.  As the name implies, it transforms each escaped sequence of bytes into a literal sequence of bytes.
+如你所见，每一个空格可以被`\040`替代。这是许多语言中你可能必须解析的特性，被称为转义。字符`\`是转义符，`040`是转义序列。有时候你可能想要一个`\`，这时你需要使用`\\`对其进行转义。
+
+幸运的是，nom已经有了一个内置的解析器`nom::bytes::complete::escaped_transform`来处理这些转义序列。就像它的名字一样，它将字符数组每一个转义序列转换成字节数组的文本序列。
 
 ```rust
 pub(self) mod parsers {
@@ -349,11 +350,11 @@ pub(self) mod parsers {
 }
 ```
 
-### Start Simple
+### 从简单开始
 
-We start by defining custom parsers `escaped_space` and `escaped_backslash` that recognize their escaped sequences, `040` and `\`, and return the un-escaped sequences ` ` and `\`, respectively.
+我们从定义可以识别转义序列(`040`和`\`)的自定义`escaped_space`和`escaped_backslash`解析器开始，并分别(respectively)返回未转义的序列。
 
-The `escaped_space` parser uses `nom::combinator::value`, which returns the specified value (in this case a space) when its child parser (in this case the familiar `tag`) succeeds.  We could have written it this way:
+`escaped_space`解析器使用`nom::combinator::value`，当子解析器(在本例中是熟悉的`tag`)解析成功后，它返回指定的值(在本例中是一个空格)。我们可以使用这种方式来编写：
 
 ```rust
 fn escaped_space(i: &str) -> nom::IResult<&str, &str> {
@@ -363,39 +364,42 @@ fn escaped_space(i: &str) -> nom::IResult<&str, &str> {
 	}
 }
 ```
-But nom provides us with a lot of convenient parsers like `combinator::value` out-of-the-box to make our lives easier.
 
-### Combining Parsers
+但是 nom 给我们提供了许多方便的解析器，如：`combinator::value`，开箱即用(out-of-the-box)，使用起来更加简单。
 
-With our simpler sub-parsers written and tested, it is now easy to use the `escaped_transform` parser.  If we were only escaping `\040` and didn't care about `\\` then we could have written it as:
+### 组合解析器
+
+随着编写并测试了更加简单的子解析器，现在使用`escaped_transform`解析器已经十分简单。如果我们只转义`\040`而不关心`\\`，我们可以这样写：
 
 ```rust
 nom::bytes::complete::escaped_transform(nom::bytes::complete::is_not("\\"), '\\', escaped_space)(i)	
 ```
-`escaped_transform` takes two parsers and a `char` as arguments:
 
-1. A sequence of bytes that is not escaped.  In our case we can use the familiar `bytes::complete::is_not` parser to match one or more bytes that is not the escape character.
-2. The escape character itself, `\`.
-3. A parser that transforms the escaped sequence (minus the preceding `\`) into its final form.
+`escaped_transform`需要两个解析器已经一个`字符`作为参数：
 
-In our example we have multiple escaped sequences to deal with, so we use `nom::branch::alt`, which takes a tuple of parsers as  arguments and returns the result of whichever one matches first:
+1. 不能转义的字节序列。在我们的示例中，我们可以使用熟悉的`bytes::complete::is_not`解析器来匹配一个或多个不是空格字符的字节。
+2. `\`是转义字符。
+3. 解析器将转义序列转换成了最终的形式(去掉了前面的`\`)。
+
+在我们的示例中，我们需要处理许多转义序列，因此我们使用`nom::branch::alt`，它可以将解析器元组作为参数并当其中一个解析器匹配上的时候返回结果：
 
 ```rust
 escaped_transform(..., alt((escaped_backslash, escaped_space)))
 ```
 
-### Return Types
+### 返回值类型
 
-Up until now we've seen nom parsers return an `IResult<&str, &str>`, but nom parsers are just Rust functions and they can return anything.  If you've studies the example code closely you've noticed:
+到目前为止，我们看到 nom 解析器返回的是一个`IResult<&str, &str>`，但是 nom 解析器仅仅是一个 Rust 函数，它们可以返回任何值。如果你仔细的研究了示例代码你会发现：
 
 ```rust
 fn transform_escaped(i: &str) -> nom::IResult<&str, std::string::String>
 ```
-This is because the `escaped_transform` parser can't generate its output string without copying/allocating memory, so instead of an `&str` it returns `nom::IResult<&str, std::string::String>`.
 
-## <a name="chap8"></a>Mount Options
+这是因为`escaped_transform`解析器不进行内存的拷贝/分配就无法生成自己的输出字符串，因此它返回的是`nom::IResult<&str, std::string::String>`而不是`&str`。
 
-We're almost there.  We have to define one more custom parser before we assemble all our custom parsers into (metaphorically) a glorious lego spaceship.  The following custom parser transforms a comma-separated list of mount options like `ro,user` into a vector of strings like `["ro", "user"]`.  By now it should be fairly obvious to you what this code does and how it works:
+## <a name="chap8"></a>挂载选项
+
+我们已经快到(终点)了。我们必须自定义一个或多个解析器，然后才可以将所有自定义解析器组合到一架灿烂(glorious)的乐高飞船中。下面的自定义解析器将以逗号为分隔符的挂载选项清单(如：`ro,user`)解析成字符串向量(如：`["ro", "user"]`)。到目前为止，你应该已经十分清楚该代码的作用以及它是如何工作的。
 
 ```rust
 pub(self) mod parsers {
@@ -422,17 +426,17 @@ pub(self) mod parsers {
 	}
 }
 ```
-As you can see from the return type of `mount_opts` we are going to generate a `Vec<String>` just like we promised.  The parser `multi::separated_list` does just that, parsing a list separated by some parser with elements that match some other parser into a vector.
+从返回的`mount_opts`类型可以看出，我们将像我们承诺的那样生成一个`Vec<String>`。`multi::separated_list`就是用来做这个的，将某些解析器解析后分隔的列表元素(可能与其他解析器相匹配)转化成一个向量。
 
-1. The list is separated by `character::complete::char(',')`.
-2. The elements of the list must not contain commas.  They also must not contain whitespace because the list is terminated by whitespace.
-3. While we're at it, we use `combinator::map_parser` to call the `transform_escaped` parser on the output of `is_not(", \t")` before adding it to the vector.  This allows us to conveniently deal with the escaped characters in one fell swoop.
+1. 列表由`character::complete::char(',')`分隔。
+2. 列表的元素必须不能包含逗号。它们也不允许包含空格，因为列表会因为空格而被终止。
+3. 我们先使用`combinator::map_parser`在`is_not(", \t")`的输出上调用`transform_escaped`解析器，然后再将其添加到向量中。这让我们可以十分方便的处理转义字符。
 
-## <a name="chap9"></a>Putting it All Together
+## <a name="chap9"></a>整合全部内容
 
-This tutorial may have felt like a lot of coding with no end in sight.  Now that we've defined all the custom parsers we need, we will write one more parser that puts everything together.  Hopefully when you see how simple it is to compose high-level parsers from simple parsers you will appreciate how powerful your programs will be when you use nom.
+本教程可能看起来有很多的代码并看不到尽头。既然我们已经定义了所有我们需要的解析器，我们将再写一个解析器将所有东西整合到一起。希望当你看到由简单解析器组成高级解析器是这么的简单时，你会感叹道：当使用 nom 时，你的程序是多么的强大。
 
-### The Final Parser
+### 最终的解析器
 
 ```rust
 pub(self) mod parsers {
@@ -503,18 +507,19 @@ pub(self) mod parsers {
 	}
 }
 ```
-Wow, that's a lot of code!  Taking a birds-eye view, notice that `parse_line` returns a `Mount`.  Also notice that it's `pub` since this is the one parser we'll want to call from outside the `parsers` module.  Let's break up the details into 3 parts (labeled by comments in the code):
 
-1. Ignore the `all_consuming` parser for now, `sequence::tuple` matches a tuple of sub-parsers in order.  In part 1 we supply a list of child parsers (as a tuple) that we want to match.  This allows us to tell nom what a line in `/proc/mounts` should look like: first some non-whitespace, then some whitespace, then some more non-whitespace, then some more whitespace, at some point some mount options, and so forth.  Note how we slipped in some calls to `map_parser` with `transform_escaped` to deal with escaped characters.
+哇哦，代码有点多！从整体上来看，我们注意到`parse_line`返回了`Mount`结构。我们还注意到它是`pub`的，因为我们希望在`parsers`模块外部调用这个解析器。我们将具体的细节分为三个部分(在代码中用注释标记)：
 
-2. The `sequence::tuple` parser returns a tuple where each element in the tuple corresponds to each of its child parsers.  In part 2 we destructure the tuple into some descriptively names local variables.  For example, the very first non-whitespace sequence on a line is the device, so we destructure the first element in the tuple to a variable called `device`.  We ignore elements of the tuple we don't care about (like the whitespace) by using `_` as a placeholder.
-3. We create and then return a new `Mount` object using the local variables desctructured in part 2.
+1. 目前先忽略`all_consuming`解析器，`sequence::tuple`依次匹配一个子解析器元组。在第一部分中，我们提交了一个我们想要匹配的子解析器列表(作为一个元组)。它可以告诉 nom `/proc/mounts`中的每一行的结构：首先是一些非空格字符，后面跟一些空格，然后是一些更多的非空格，后面跟更多的空格，后面有时会跟一些挂载参数，以此类推(so forth)。请注意：我们在调用中是如何溜进带有`transform_escaped`的`map_parser`解析器来处理转义字符的。
 
-Finally, the `all_consuming` parser fails if there is any input left over.  This will cause `parse_line` to (conservatively) return an error if there is something at the end of the line we were not expecting.
+2. `sequence::tuple`解析器返回了一个元组，该元组中的每个元素对应它的每一个子解析器。在第二部分中，我们将元组解构成带有描述性名称的局部变量。举个例子：每一行中的第一个非空序列表示设备，因此我们将元组解构后，将其第一个元素命名为`device`。我们使用`_`作为占位符来忽略元素中我们并不关心的元素(如：空格)。
+3. 我们使用第二部分解构的局部变量创建并返回一个新的`Mount`对象。
 
-### Alternative Final Parser
+最后，如果这里有剩余的输入，`all_consuming`解析器将会解析失败。如果一行的结尾没有我们所期望的，将会导致`parse_line`保守的(conservatively)返回一个错误。
 
-I've received what I think is valid feedback that the final parser above is too complicated to look at.  What follows is an alternative version of the final parser that accomplishes the same objective with fewer, possibly more readable (depending on your sensibilities) lines of code.  It makes heavy use of the `?` operator to break the `tuple` parser into individual statements.  The `?` operator ends the function early, returning an error, if a parser fails.  The remaining input from each parser is used as the input of the next parser.  Pertinent variables are stored and later used to construct the `Mount` object at the end of the function.  Superfluous variables are discarded by assigning to `_`.
+### 最终解析器的替代方案
+
+我收到了一些有效的反馈说上面的最终解析器太过复杂，无法查看。下面是最终解析器的替代方案，它使用更少的，可读性更强(取决于你的敏感度)的代码来实现相同的功能。它使用了大量的`?`将元组解析器分解成了单独的语句。如果解析失败，`?`操作符会尽早的结束函数并返回一个错误。来自每个解析器的剩余输入会当作下一个解析器的输入。相关的(Pertinent)变量将被存储，之后会在函数的末尾用于构造`Mount`对象，多余的(Superfluous)变量通过分配给`_`来丢弃。
 
 ```rust
 pub fn parse_line_alternate(i: &str) -> nom::IResult<&str, Mount> {
@@ -541,11 +546,11 @@ pub fn parse_line_alternate(i: &str) -> nom::IResult<&str, Mount> {
 }
 ```
 
-Try it out for yourself by commenting-out the original function and renaming `parse_line_alternate` to `parse_line`.  Use whichever style you like better in your own code.
+你可以尝试一下通过注释掉原始函数并将`parse_line_alternate`命名为`parse_line`。在你的代码中可以使用你更喜欢的风格。
 
-### Testing It Out
+### 测试
 
-You can already verify the program works with `cargo test` but let's make things a little nicer so that calling our binary will display a line-by-line list of mounts.  We'll define a function `nom_tutorial::mounts()` to print them out and then call it from `main.rs`.
+你已经可以通过执行`cargo test`来验证程序是否可以正常工作，但是我们可以做的更好一点，让它可以调用我们的可执行文件并一行行的展示挂载列表。我们将定义一个名为`nom_tutorial::mounts()`的函数来将它们打印出来，并可以在`main.rs`中对其进行调用。
 
 `lib.rs`
 
@@ -578,19 +583,21 @@ fn main() -> std::result::Result<(), BoxError> {
 	Ok(())
 }
 ```
-We open the file `/proc/mounts`, created a `BufReader` to read it line-by-line, and then parse each line.  If parsing leads to an error we convert that into our custom error type `ParseError` [defined earlier](#chap5).  If parsing is successful (which it should be) we print the `Mount` option out on a new line.  To try it out:
+
+我们打开`/proc/mounts`文件，创建一个`BufReader`来一行行的读取输入，然后解析每一行。如果解析失败，我们将其转换成[在之前定义的](#chap5)自定义错误类型`ParseError`。如果解析成功则将`Mount`的选项在新的一行打印出来。可以如下进行尝试：
 
 ```console
 $ cargo run
 /dev/nvme0n1p3 on /home/benjamin/Mary had type btrfs (rw,seclabel,noatime,nodiratime,ssd,discard,space_cache,subvolid=258,subvol=/home/benjamin/a little lamb)
 ...output trimmed for length...
 ```
-We could have read the entire contents of `/proc/mounts` and used `nom::character::complete::line_ending` to modify our parsers to recognize the line endings.  However, what if `/proc/mounts` was very long?  Maybe we are working on a big server with hundreds of mounted filesystems leading `/proc/mounts` to be hundreds of megabytes in size!  (OK, that probably wouldn't happen in real life.)  Since Rust already gives us another way to parse line endings (the `BufReader`) we might as well take advantage of it to lower our (theoretical) memory use and keep our parser simple.
+
+我们可以读取`/proc/mounts`的完整内容并使用`nom::character::complete::line_ending`来修改我们的解析器以识别行结束标识。然而，如果`/proc/mounts`的内容特别长怎么办呢？也许我们正在一个具有数百个已挂载文件系统的大型服务器上工作，这会导致`/proc/mounts`的内容达到上百兆字节！(好吧，。这可能在现实生活中不会出现) 由于 Rust 已经为我们提供了另一种解析行尾的方式(`BufReader`)，因此我们不妨利用它来降低(理论上的)内存使用量并使我们的解析器足够简单。
 
 
-## <a name="chap10"></a>Iterators are the Finishing Touch
+## <a name="chap10"></a>迭代器是点睛之笔
 
-From the standpoint of splitting our parser into a library and a binary, simply having a function `mounts()` that prints out a list of mounts isn't very ergonomic.  The final version of this tutorial, which you can download from Github, introduces a new object of type `Mounts` that internally manages a `BufReader` on `/proc/mounts` and implements the `IntoIterator` trait.  This enables us to write `main.rs` like this:
+从将我们的解析器分解成类库和二进制的角度(standpoint)来看，仅仅具有一个可以打印出挂载列表的函数不太符合人体工程学(ergonomic)。本教程的最终版本，你可以从 Github 上下载，引入了一个类型为`Mounts`的新对象，它在内部管理`/proc/mounts`上的`BufReader`并实现了`IntoIterator`接口。这让我们在`main.rs`中可以这样编写：
 
 ```rust
 extern crate nom_tutorial;
@@ -602,7 +609,8 @@ fn main() -> std::result::Result<(), BoxError> {
 	Ok(())
 }
 ```
-To see how powerful this is we can play around a little:
+
+想要知道这到底有多强大，我们可以尝试一下：
 
 ```rust 
 extern crate nom_tutorial;
@@ -621,7 +629,8 @@ $ cargo run
 The device "/dev/nvme0n1p3" is mounted at "/home/benjamin/Mary had".
 ...output trimmed for length...
 ```
-Unfortunately, there is a fair bit of boilerplate code needed to write a custom iterator in Rust.  Rather than try to explain it all here I recommend you read [Dan DiVica's tutorial on Rust iterators](https://dev.to/dandyvica/yarit-yet-another-rust-iterators-tutorial-46dk).  Note that once we get a line from `BufReader` we can't rewind and get the line again.  Therefore, `Mounts` implements a consuming iterator and a mutable iterator, but it doesn't implement a borrowed iterator.  To demonstrate what that means:
+
+不幸的是，在 Rust 中编写自定义迭代器需要编写大量的样板代码。与其在这里解释所有的内容，我推荐你阅读[Dan DiVica's tutorial on Rust iterators](https://dev.to/dandyvica/yarit-yet-another-rust-iterators-tutorial-46dk)。请注意：一旦我们从`BufReader`中获取到某一行，我们就再也无法回滚并重新获取到那一行的数据了。`Mounts`实现了一个消耗迭代器和可变迭代器，但是没有实现借用迭代器。来证明一下它说的是什么意思：
 
 ```rust
 extern crate nom_tutorial;
@@ -673,6 +682,6 @@ error: Could not compile `nom-tutorial`.
 To learn more, run the command again with --verbose.
 ```
 
-## Closing
+## 结束
 
-I hope this tutorial has helped you feel comfortable using nom, and maybe even learned a little bit more about Rust than you knew before.  Please don't hesitate to open an issue on Github if you discover typos, errors, or omissions.  Happy coding!
+我希望这篇文章可以帮助到你，使你在使用 nom 时更加舒适，甚至可能学到了你之前未曾了解的 Rust 的内容。如果你发现了错别字(typo)，错误或遗漏(omission)，请不要犹豫在 Github 上打开一个 issue。Happy coding!
