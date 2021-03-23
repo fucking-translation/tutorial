@@ -260,9 +260,9 @@ pub(self) mod parsers {
 }
 ```
 
-The core of this parser is `nom::bytes::complete::is_not(" \t")` which is a nom parser that recognizes one or more bytes that is not a space or tab -- i.e. is not whitespace, exactly what we want!  If the syntax for creating a custom parser (here named `not_whitespace`) doesn't look familiar to you then go back to the [Hello Parser](#chap3) example.
+这个解析器的核心是`nom::bytes::complete::is_not(" \t")`， 它是一个 nom 解析器，可以识别一个或多个不是空格或制表符的字节 -- 如：不是空格，正是我们想要的。如果你对创建自定义的解析器(这里被称为`not_whitespace`)的语法不是很熟悉的话，可以回到[你好，解析器](#chap3)的示例中进行回顾。
 
-### Organization
+### 组织
 
 Although not strictly necessary to make a program work, we try to model good coding practices through encapsulation.  We'll put all our nom parsers inside a submodule named `parsers`.  The submodule is `pub(self)`, which means that other methods in `lib.rs` can use it but it's not exposed outside of our crate.
 
