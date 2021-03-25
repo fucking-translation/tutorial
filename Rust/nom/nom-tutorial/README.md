@@ -375,7 +375,7 @@ fn escaped_space(i: &str) -> nom::IResult<&str, &str> {
 nom::bytes::complete::escaped_transform(nom::bytes::complete::is_not("\\"), '\\', escaped_space)(i)	
 ```
 
-`escaped_transform`需要两个解析器已经一个`字符`作为参数：
+`escaped_transform`需要两个解析器以及一个`字符`作为参数：
 
 1. 不能转义的字节序列。在我们的示例中，我们可以使用熟悉的`bytes::complete::is_not`解析器来匹配一个或多个不是空格字符的字节。
 2. `\`是转义字符。
