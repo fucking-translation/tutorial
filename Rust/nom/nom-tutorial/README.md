@@ -132,7 +132,7 @@ println!("{:?}", hello_parser("hello"));
 // Ok(("", "hello"))
 ```
 
-在本例中，tag 消耗来整个输入，因此元组的第一个元素(输入的剩余部分)是一个空字符串。
+在本例中，tag 消耗了整个输入，因此元组的第一个元素(输入的剩余部分)是一个空字符串。
 
 ```rust
 println!("{:?}", hello_parser("goodbye hello again"));
