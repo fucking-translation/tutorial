@@ -171,7 +171,7 @@ println!("{:?}", hello_parser("goodbye hello again"));
 
 将你的整个程序写在一个文件中很简单，也很迷人。然而，更好的做法是将你的程序分为类库和二进制文件，让基础逻辑更易于重用。在本教程中，我们将使用一种更得体(take the high road)的方式，在`main.rs`的同级目录下创建一个名为`lib.rs`的空文件。Cargo自动知道将`lib.rs`构建到我们在`Cargo.toml`中使用`name="nom-example"`行指定名称“nom-example”的库/crate中。然后让一个新的`main.rs`使用我们的`nom-example`库而不是直接使用 nom。
 
-```rust.rs
+```rust
 extern crate nom_example;
 
 fn main() {
