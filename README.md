@@ -5,7 +5,8 @@
 
 ### Rust
  - [ ] [使用LLVM构建Kaleidoscope语言](./Rust/使用LLVM构建Kaleidoscope语言)  
- - [x] [nom5 教程](./Rust/nom/nom-tutorial/)
+ - [x] [nom5 教程](./Rust/nom/nom-tutorial/)  
+ - [x] [tokio官方教程](https://sinsay.github.io/tokio/tutorial-hello.html)
 
 # 推荐阅读
 
