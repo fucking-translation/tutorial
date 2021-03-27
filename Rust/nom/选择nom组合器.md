@@ -34,9 +34,9 @@
 |---|---|---|---|---|
 | [delimited](https://docs.rs/nom/latest/nom/macro.delimited.html) | `delimited!(char!('('), take!(2), char!(')'))` | `"(ab)cd"` | `Ok(("cd", "ab"))` ||
 | [preceded](https://docs.rs/nom/latest/nom/macro.preceded.html) | `preceded!(tag!("ab"), tag!("XY"))` | `"abXYZ"` | `Ok(("Z", "XY"))` ||
-| [terminated](https://docs.rs/nom/latest/nom/macro.terminated.html) | `terminated!(tag!("ab"), tag!("XY"))` | `"abXYZ"` | `Ok(("Z", "ab"))` ||
+| [terminated](https://docs.rs/nom/latest/nom/macro.terminated.html) | `terminated!(tag!("ab"), tag!("XY"))` | `"abXYZ"` | `Ok(("Z", "ab"))` |获取第一个解析器解析的值，然后在第二个解析器中进行匹配，并将匹配的结果丢弃|
 | [pair](https://docs.rs/nom/latest/nom/macro.pair.html) | `pair!(tag!("ab"), tag!("XY"))` | `"abXYZ"` | `Ok(("Z", ("ab", "XY")))` ||
-| [separated_pair](https://docs.rs/nom/latest/nom/macro.separated_pair.html) | `separated_pair!(tag!("hello"), char!(','), tag!("world"))` | `"hello,world!"` | `Ok(("!", ("hello", "world")))` ||
+| [separated_pair](https://docs.rs/nom/latest/nom/macro.separated_pair.html) | `separated_pair!(tag!("hello"), char!(','), tag!("world"))` | `"hello,world!"` | `Ok(("!", ("hello", "world")))` |获取第一个解析器解析的值，然后匹配中间的解析器，并将结果丢弃，然后获取第二个解析器解析的值|
 | [tuple](https://docs.rs/nom/latest/nom/macro.tuple.html) | `tuple!(tag!("ab"), tag!("XY"), take!(1))` | `"abXYZ!"` | `Ok(("!", ("ab", "XY", "Z")))` |链接解析器并将子解析器的结果组合到一个元组中。你可以在元组中放置尽可能多的子解析器|
 | [do_parse](https://docs.rs/nom/latest/nom/macro.do_parse.html) | `do_parse!(tag: take!(2) >> length: be_u8 >> data: take!(length) >> (Buffer { tag: tag, data: data}) )` | `&[0, 0, 3, 1, 2, 3][..]` | `Buffer { tag: &[0, 0][..], data: &[1, 2, 3][..] }` |`do_parse`依次执行子解析器。它可以存储中间结果并提供给以后的解析器|
 
