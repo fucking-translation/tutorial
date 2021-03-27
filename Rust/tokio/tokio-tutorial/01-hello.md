@@ -1,8 +1,6 @@
-# Hello Tokio [转载]
+# Hello Tokio
 
 [原文](https://tokio.rs/)  
-
-[译文](https://sinsay.github.io/tokio/tutorial-hello.html)
 
 </br>
 
