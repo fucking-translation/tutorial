@@ -47,7 +47,7 @@
 | [count](https://docs.rs/nom/latest/nom/macro.count.html) | `count!(take!(2), 3)` | `"abcdefgh"` | `Ok(("gh", vec!("ab", "cd", "ef")))` |将子解析器执行指定的次数|
 | [many0](https://docs.rs/nom/latest/nom/macro.many0.html) | `many0!(tag!("ab"))` |  `"abababc"` | `Ok(("c", vec!("ab", "ab", "ab")))` |将解析器执行 0 次或多次，并在 Vec 中返回结果列表。`many1`同理，但是必须至少返回一个元素|
 | [many_m_n](https://docs.rs/nom/latest/nom/macro.many_m_n.html) | `many_m_n!(1, 3, tag!("ab"))` | `"ababc"` | `Ok(("c", vec!("ab", "ab")))` |将解析器执行 m 到 n 次(包括 n)，并在 Vec 中返回结果列表|
-| [many_till](https://docs.rs/nom/latest/nom/macro.many_till.html) | `many_till!(tag!( "ab" ), tag!( "ef" ))` | `"ababefg"` | `Ok(("g", (vec!("ab", "ab"), "ef")))` |Applies the first parser until the second applies. 返回一个包含第一个解析器在 Vec 中的结果列表以及第二个解析器的解析结果|
+| [many_till](https://docs.rs/nom/latest/nom/macro.many_till.html) | `many_till!(tag!( "ab" ), tag!( "ef" ))` | `"ababefg"` | `Ok(("g", (vec!("ab", "ab"), "ef")))` |应用第一个解析器，直到第二个解析器应用。返回一个包含第一个解析器在 Vec 中的结果列表以及第二个解析器的解析结果|
 | [separated_list](https://docs.rs/nom/latest/nom/macro.separated_list.html) | `separated_list!(tag!(","), tag!("ab"))` | `"ab,ab,ab."` | `Ok((".", vec!("ab", "ab", "ab")))` |`separated_nonempty_list`同`separated_list`一样，但是必须至少返回一个元素|
 | [fold_many0](https://docs.rs/nom/latest/nom/macro.fold_many0.html) | `fold_many0!(be_u8, 0, \|acc, item\| acc + item)` | `[1, 2, 3]` | `Ok(([], 6))` |将解析器执行 0 次或多次，并将返回的结果列表进行聚合(折叠)。`fold_many1`必须至少让子解析器执行一次|
 | [fold_many_m_n](https://docs.rs/nom/latest/nom/macro.fold_many_m_n.html) | `fold_many_m_n!(1, 2, be_u8, 0, \|acc, item\| acc + item)` | `[1, 2, 3]` | `Ok(([3], 3))` |将解析器执行 m 到 n 次(包括 n) 并聚合(折叠)返回的结果列表|
