@@ -14,3 +14,7 @@
 - [rust程序设计语言](https://github.com/KaiserY/trpl-zh-cn) 
 - [rust死灵书](https://learnku.com/docs/nomicon/2018)  
 - [Brainfuck JIT 虚拟机教程](https://nugine.github.io/bfjit/introduction.html) 
+
+# 致谢
+
+- [sinsay](https://github.com/sinsay)
