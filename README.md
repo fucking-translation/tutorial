@@ -5,6 +5,7 @@
 
 ### Rust
  - [ ] [使用LLVM构建Kaleidoscope语言](./Rust/使用LLVM构建Kaleidoscope语言)  
+ - [ ] [《Roguelike Tutorial in Rust - using RLTK》中文教程](https://github.com/fucking-translation/rustrogueliketutorial-zh)
  - [x] [nom5 教程](./Rust/nom/nom-tutorial/)  
  - [x] [tokio官方教程](https://sinsay.github.io/tokio/tutorial-hello.html)
 
