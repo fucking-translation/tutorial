@@ -10,9 +10,9 @@
 
 ### 创建一个新程序
 
-我们从创建一个新的 Rust 程序开始
+我们从创建一个新的`Rust`程序开始
 
-```console
+```s
 cargo new my-redis
 cd my-redis
 ```
@@ -52,13 +52,13 @@ pub async fn main() -> Result<()> {
 
 为了确保`Mini-Redis`的服务端处于运行状态，我们打开一个终端窗口，运行如下命令:
 
-```console
+```s
 mini-redis-server
 ```
 
 接下来运行我们的`mini-redis`程序
 
-```console
+```s
 $ cargo run
 got value from the server; result=Some(b"world)
 ```
@@ -131,7 +131,7 @@ async fn main() {
 
 输出
 
-```
+```s
 hello
 world
 ```
