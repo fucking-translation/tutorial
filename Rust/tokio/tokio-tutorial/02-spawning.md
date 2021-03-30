@@ -271,7 +271,7 @@ note: future is not `Send` as this value is used across an await
     |     - `rc` is later dropped here
 ```
 
-我们会在[下一章](./sharedstate.md)讨论一个关于这个错误的特殊的例子。
+我们会在[下一章](./03-sharedstate.md)讨论一个关于这个错误的特殊的例子。
 
 ### Store Values
 
