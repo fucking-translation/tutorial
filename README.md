@@ -8,6 +8,7 @@
  - [ ] [《Roguelike Tutorial in Rust - using RLTK》中文教程](https://github.com/fucking-translation/rustrogueliketutorial-zh)
  - [x] [nom5 教程](./Rust/nom/nom-tutorial/)  
  - [x] [tokio官方教程](https://sinsay.github.io/tokio/tutorial-hello.html)
+ - [ ] [serde 官方教程](./Rust/serde/serde-tutorial/)
 
 # 推荐阅读
 
