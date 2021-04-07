@@ -1,1 +1,1 @@
-# [serde 官方文档]((https://serde.rs/))
+# [serde 官方文档](https://serde.rs/)
