@@ -9,6 +9,7 @@
  - [x] [nom5 教程](./Rust/nom/nom-tutorial/)  
  - [x] [tokio官方教程](https://sinsay.github.io/tokio/tutorial-hello.html)
  - [ ] [serde 官方教程](./Rust/serde/serde-tutorial/)
+ - [x] [「转」200 行代码讲透 Rust 的 Futures](https://stevenbai.top/books-futures-explained/book/)
 
 # 推荐阅读
 
