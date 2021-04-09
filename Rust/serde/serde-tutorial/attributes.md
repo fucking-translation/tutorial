@@ -4,8 +4,8 @@
 
 这里有三种类型的属性：
 
-- [容器属性](https://serde.rs/container-attrs.html) - 应用于结构体或枚举的声明。
-- [变量属性](https://serde.rs/variant-attrs.html) - 应用于枚举的变量。
+- [容器属性](./container-attrs.md) - 应用于结构体或枚举的声明。
+- [variant 属性](https://serde.rs/variant-attrs.html) - 应用于枚举的 variant。
 - [字段属性](https://serde.rs/field-attrs.html) - 应用于结构体的一个字段或者一个枚举变量。
 
 ```rust
