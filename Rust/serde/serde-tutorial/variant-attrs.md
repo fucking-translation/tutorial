@@ -65,4 +65,10 @@
 
 #### 11. `#[serde(borrow)]`和`#[serde(borrow = "'a + 'b + ...")]`
 
-从使用零拷贝反序列化的反序列化器中
+从使用零拷贝反序列化的反序列化器中为该字段借用数据。请参阅[这个示例](https://serde.rs/lifetimes.html#borrowing-data-in-a-derived-impl)。只允许在 newtype 变体上 (只有一个字段的元组辩题) 使用此属性。
+
+#### 12. `#[serde(other)]`
+
+如果枚举标签不是此枚举中其他变体之一的标签，则反序列化此变体。仅允许在内部标记或相邻标记的枚举内部的单元变体上使用。
+
+举个例子：如果我们有一个带有`serde(tag = "variant")`的内部标记的枚举，该枚举包含`A`，`B`即标记了`serde(other)`的`Unknown`变体，只要输入的`“variant”`字段既不是`“A”`也不是`“B”`则将其序列化。
