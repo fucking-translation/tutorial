@@ -51,7 +51,7 @@
 
 #### 9. `#[serde(with = "module")]`
 
-将`serialize_with`和`deserialize_with`进行结合。Serde 将会使用`$module::serialize`作为`serialize_with`的函数，使用`$module::deserialize`作为`deserialize_with`的函数。
+将`serialize_with`和`deserialize_with`结合使用。Serde 将会使用`$module::serialize`作为`serialize_with`的函数，使用`$module::deserialize`作为`deserialize_with`的函数。
 
 #### 10. `#[serde(bound = "T: MyTrait")]`
 
@@ -65,7 +65,7 @@
 
 #### 11. `#[serde(borrow)]`和`#[serde(borrow = "'a + 'b + ...")]`
 
-从使用零拷贝反序列化的反序列化器中为该字段借用数据。请参阅[这个示例](https://serde.rs/lifetimes.html#borrowing-data-in-a-derived-impl)。只允许在 newtype 变体上 (只有一个字段的元组辩题) 使用此属性。
+从使用零拷贝反序列化的反序列化器中为该字段借用数据。请参阅[这个示例](./lifetimes.md#borrowing-data-in-a-derived-impl)。只允许在 newtype 变体上 (只有一个字段的元组辩题) 使用此属性。
 
 #### 12. `#[serde(other)]`
 
