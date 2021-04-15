@@ -25,6 +25,7 @@
 - [rust死灵书](https://learnku.com/docs/nomicon/2018)  
 - [Brainfuck JIT 虚拟机教程](https://nugine.github.io/bfjit/introduction.html) 
 - [200 行代码讲透 Rust 的 Futures](https://stevenbai.top/books-futures-explained/book/)
+- [rust 算法俱乐部](https://github.com/weihanglo/rust-algorithm-club)
 
 # 致谢
 
