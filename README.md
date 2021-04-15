@@ -14,6 +14,14 @@
 
 ### Rust
 - [rust程序设计语言](https://github.com/KaiserY/trpl-zh-cn) 
+- [rust 实践指南](https://rust-guide.budshome.com/)
+- [rust 参考手册](https://minstrel1977.gitee.io/rust-reference)
+- [rust cookbook 中文版](https://rust-cookbook.budshome.com/)
+- [通过例子学 Rust](https://rust-by-example.budshome.com/index.html)
+- [cargo 中文文档](https://cargo.budshome.com/)
+- [mdbook 中文文档](https://mdbook.budshome.com/)
+- [rust 博客 - 芽之家](https://blog.budshome.com/)
+- [rust 异步编程](https://github.com/fucking-translation/async-book-zh)
 - [rust死灵书](https://learnku.com/docs/nomicon/2018)  
 - [Brainfuck JIT 虚拟机教程](https://nugine.github.io/bfjit/introduction.html) 
 - [200 行代码讲透 Rust 的 Futures](https://stevenbai.top/books-futures-explained/book/)
