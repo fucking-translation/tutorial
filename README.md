@@ -9,6 +9,7 @@
  - [x] [nom5 教程](./Rust/nom/nom-tutorial/)  
  - [x] [tokio官方教程](https://sinsay.github.io/tokio/tutorial-hello.html) ([@sinsay](https://github.com/sinsay))
  - [ ] [serde 官方教程](./Rust/serde/serde-tutorial/)
+ - [x] [rust 小宏书](https://github.com/DaseinPhaos/tlborm-chinese)
 
 ### 数据库
  - [x] [数据库内幕](https://sinsay.github.io/db/index.html) ([@sinsay](https://github.com/sinsay))

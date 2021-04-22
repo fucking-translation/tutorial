@@ -1,6 +1,4 @@
-# 「转」[Rust 小宏书](https://github.com/DaseinPhaos/tlborm-chinese)
-
-## 目录
+# Summary
 
 * [宏，彻底剖析](mbe-README.md)
     * [语法扩展](mbe-syn-README.md)
