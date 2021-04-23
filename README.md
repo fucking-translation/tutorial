@@ -11,9 +11,6 @@
  - [ ] [serde 官方教程](./Rust/serde/serde-tutorial/)
  - [x] [rust 小宏书](https://github.com/DaseinPhaos/tlborm-chinese)
 
-### 数据库
- - [x] [数据库内幕](https://sinsay.github.io/db/index.html) ([@sinsay](https://github.com/sinsay))
-
 # 推荐阅读
 
 ### Rust
@@ -31,6 +28,10 @@
 - [200 行代码讲透 Rust 的 Futures](https://stevenbai.top/books-futures-explained/book/)
 - [rust 算法俱乐部](https://github.com/weihanglo/rust-algorithm-club)
 - [rust cheat sheet](https://cheats.rs/)
+
+### 数据库
+ - [数据库内幕](https://sinsay.github.io/db/index.html) ([@sinsay](https://github.com/sinsay))
+ - [redis 设计与实现](https://github.com/huangz1990/redisbook)
 
 # 致谢
 
