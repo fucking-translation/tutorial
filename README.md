@@ -9,7 +9,6 @@
  - [x] [nom5 教程](./Rust/nom/nom-tutorial/)  
  - [x] [tokio官方教程](https://sinsay.github.io/tokio/tutorial-hello.html) ([@sinsay](https://github.com/sinsay))
  - [ ] [serde 官方教程](./Rust/serde/serde-tutorial/)
- - [x] [rust 小宏书](https://github.com/DaseinPhaos/tlborm-chinese)
 
 # 推荐阅读
 
@@ -28,6 +27,7 @@
 - [200 行代码讲透 Rust 的 Futures](https://stevenbai.top/books-futures-explained/book/)
 - [rust 算法俱乐部](https://github.com/weihanglo/rust-algorithm-club)
 - [rust cheat sheet](https://cheats.rs/)
+- [rust 小宏书](https://github.com/DaseinPhaos/tlborm-chinese)
 
 ### 数据库
  - [数据库内幕](https://sinsay.github.io/db/index.html) ([@sinsay](https://github.com/sinsay))
