@@ -134,7 +134,7 @@ async fn main() {
 
 当你通过`Tokio`的`Runtime`创建一个任务时，这个任务的类型必须是`'static`的。这意味着被创建的任务不能够包含对任务以外任何数据的引用。
 
-有一个常见的误解是`'static`始终代表着一直存活。但在这个场景中并不是，标识为`'static`的值只是意味着他不会产生内存泄漏。具体的可以通过[Common Rust Lisetime Misconceptions](https://github.com/pretzelhammer/rust-blog/blob/master/posts/common-rust-lifetime-misconceptions.md#2-if-t-static-then-t-must-be-valid-for-the-entire-program)进行了解。
+有一个常见的误解是`'static`始终代表着一直存活。但在这个场景中并不是，标识为`'static`的值只是意味着他不会产生内存泄漏。具体的可以通过[Common Rust Lifetime Misconceptions](https://github.com/pretzelhammer/rust-blog/blob/master/posts/common-rust-lifetime-misconceptions.md#2-if-t-static-then-t-must-be-valid-for-the-entire-program)进行了解。
 
 举个例子，下面的代码无法通过编译：
 
@@ -188,7 +188,7 @@ help: to force the async block to take ownership of `v` (and any other
 
 同时我们也留意到错误信息提到参数类型的存活时间超过了`'static`，这个术语可能会造成困惑，因为`'static`的生命周期已经覆盖了整个程序了，如果参数的存活时间还超过了`'static`是不是意味着存在内存泄漏？对于这个疑惑的具体解释是，这里提到的超过`'static`生命周期的是参数的类型而不是参数的值，当参数的值被不再使用时他就会被销毁了。
 
-当我们提到一个值是`'static`时，说他会永远存活并不意味着不正确。这点非常重要，因为编译器无法确定这个新创建的任务会存活多久，所以他能做的确保这个任务不会存活太久的方式就是让他一直都存在。
+当我们提到一个值是`'static`时，说他会永远存活并不意味着不正确。这点非常重要，因为编译器无法确定这个新创建的任务会存活多久，所以他能确保这个任务不会存活太久的方式就是让他一直都存在。
 
 上面提供的链接中提到的术语 "bounded by 'static" 或 "its type outlives 'static" 或 "the value is 'static for T: 'static" 都表达了同一个意思，但他们跟以`&'static T`使用的标注是不一样的。
 
