@@ -28,6 +28,7 @@
 - [rust 算法俱乐部](https://github.com/weihanglo/rust-algorithm-club)
 - [rust cheat sheet](https://cheats.rs/)
 - [rust 小宏书](https://github.com/DaseinPhaos/tlborm-chinese)
+- [rCore 操作系统教程](https://rcore-os.github.io/rCore-Tutorial-Book-v3/index.html)
 
 ### 数据库
  - [数据库内幕](https://sinsay.github.io/db/index.html) ([@sinsay](https://github.com/sinsay))
