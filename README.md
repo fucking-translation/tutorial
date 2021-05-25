@@ -30,6 +30,12 @@
 - [rust 小宏书](https://github.com/DaseinPhaos/tlborm-chinese)
 - [rCore 操作系统教程](https://rcore-os.github.io/rCore-Tutorial-Book-v3/index.html)
 
+### Go
+
+- [Go 初学者快速入门](https://github.com/KeKe-Li/For-learning-Go-Tutorial)
+- [通过例子学习 Go](https://github.com/gobyexample-cn/gobyexample)
+- [Go 入门指南](https://github.com/unknwon/the-way-to-go_ZH_CN)
+
 ### 数据库
  - [数据库内幕](https://sinsay.github.io/db/index.html) ([@sinsay](https://github.com/sinsay))
  - [redis 设计与实现](https://github.com/huangz1990/redisbook)
