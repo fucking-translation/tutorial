@@ -34,6 +34,10 @@
  - [数据库内幕](https://sinsay.github.io/db/index.html) ([@sinsay](https://github.com/sinsay))
  - [redis 设计与实现](https://github.com/huangz1990/redisbook)
 
+### Service Mesh
+ - [envoy 中文文档](https://www.servicemesher.com/envoy/)
+ - [istio 服务网格进阶实战](https://www.servicemesher.com/istio-handbook/)
+
 # 致谢
 
 - [sinsay](https://github.com/sinsay)
