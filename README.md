@@ -45,6 +45,11 @@
  - [envoy 中文文档](https://www.servicemesher.com/envoy/)
  - [istio 服务网格进阶实战](https://www.servicemesher.com/istio-handbook/)
 
+ ### k8s
+
+ - [Redhat - kubernetes-tutorial](https://github.com/redhat-scholars/kubernetes-tutorial)
+ - [k8s-intro-tutorials](https://github.com/mrbobbytables/k8s-intro-tutorials)
+
 # 致谢
 
 - [sinsay](https://github.com/sinsay)
