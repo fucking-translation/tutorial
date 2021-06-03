@@ -27,7 +27,7 @@
 - [200 行代码讲透 Rust 的 Futures](https://stevenbai.top/books-futures-explained/book/)
 - [rust 算法俱乐部](https://github.com/weihanglo/rust-algorithm-club)
 - [rust cheat sheet](https://cheats.rs/)
-- [rust 小宏书](https://github.com/DaseinPhaos/tlborm-chinese)
+- [rust 小宏书](https://zjp-cn.github.io/tlborm)
 - [rCore 操作系统教程](https://rcore-os.github.io/rCore-Tutorial-Book-v3/index.html)
 
 ### Go
