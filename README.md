@@ -29,6 +29,7 @@
 - [rust cheat sheet](https://cheats.rs/)
 - [rust 小宏书](https://zjp-cn.github.io/tlborm)
 - [rCore 操作系统教程](https://rcore-os.github.io/rCore-Tutorial-Book-v3/index.html)
+- [rust 嵌入式教程](https://github.com/nkbai/book)
 
 ### Go
 
