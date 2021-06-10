@@ -38,6 +38,7 @@
 - [Go 入门指南](https://github.com/unknwon/the-way-to-go_ZH_CN)
 - [Go语法树入门](https://github.com/chai2010/go-ast-book)
 - [LeetCode-Go](https://github.com/halfrost/LeetCode-Go)
+- [深入解析 Go](https://github.com/tiancaiamao/go-internals)
 
 ### 数据库
  - [数据库内幕](https://sinsay.github.io/db/index.html) ([@sinsay](https://github.com/sinsay))
