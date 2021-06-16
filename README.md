@@ -53,6 +53,10 @@
  - [Redhat - kubernetes-tutorial](https://github.com/redhat-scholars/kubernetes-tutorial)
  - [k8s-intro-tutorials](https://github.com/mrbobbytables/k8s-intro-tutorials)
 
+ ### OS
+
+ [OS Dev](https://wiki.osdev.org/Introduction)
+
 # 致谢
 
 - [sinsay](https://github.com/sinsay)
