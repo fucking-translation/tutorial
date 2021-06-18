@@ -55,7 +55,8 @@
 
  ### OS
 
- [OS Dev](https://wiki.osdev.org/Introduction)
+ - [Linux Kernel ](https://www.kernel.org/doc/html/latest/index.html)
+ - [OS Dev](https://wiki.osdev.org/Introduction)
 
 # 致谢
 
