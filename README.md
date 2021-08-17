@@ -31,6 +31,7 @@
 - [rCore 操作系统教程](https://rcore-os.github.io/rCore-Tutorial-Book-v3/index.html)
 - [rust 嵌入式教程](https://github.com/nkbai/book)
 - [tokio 内幕](https://tony612.github.io/tokio-internals/02_main_thread_2.html)
+- [使用 Rust 编写 RPC 框架 (基于 thrift)](https://github.com/mini-lust/tutorials)
 
 ### Go
 
