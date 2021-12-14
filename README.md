@@ -60,6 +60,10 @@
  - [Linux Kernel ](https://www.kernel.org/doc/html/latest/index.html)
  - [OS Dev](https://wiki.osdev.org/Introduction)
 
+ ### Nginx
+ 
+ - [nginx源码研读](https://www.kancloud.cn/digest/understandingnginx/202588)
+
 # 致谢
 
 - [sinsay](https://github.com/sinsay)
